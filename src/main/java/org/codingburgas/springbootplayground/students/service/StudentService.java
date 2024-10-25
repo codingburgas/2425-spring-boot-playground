@@ -8,5 +8,7 @@ public interface StudentService {
   List<Student> getStudents();
   Student getStudentByUsername(String username);
 
+  Student getStudentById(Integer id);
+
   void addStudent(Student student);
 }

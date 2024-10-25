@@ -5,10 +5,7 @@ import org.codingburgas.springbootplayground.students.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.logging.Logger;
@@ -41,5 +38,11 @@ public class StudentController {
     LOGGER.info(student.getFirstname());
     studentService.addStudent(student);
     return new RedirectView("/students");
+  }
+
+  @GetMapping("/{id}")
+  public String getStudentDetails(@PathVariable Integer id, Model model) {
+    // TODO 6: Implement the method, so that it passes the information of the Student with the specified id to the model (template)
+    return "student_details.html";
   }
 }

@@ -125,6 +125,8 @@
                 </thead>
                 <tbody>
                   <tr th:each="student, iter : ${students}">
+                    <!-- TODO 7: make id display the correct id for each student (get the id from the class) -->
+                    <!-- Also link the content of the id to the student details page (for example with <a> tag -->
                     <th th:text="${iter.index + 1}">1</th>
                     <td th:text="${student.getFirstname()}">Tim</td>
                     <td th:text="${student.getLastname()}">Test</td>

@@ -39,6 +39,17 @@ public class InMemoryStudentService implements StudentService {
     students.add(student);
   }
 
+  @Override
+  public Student getStudentById(Integer id) {
+    // TODO 6: impement method to return the correct Student from the collection
+    return null;
+  }
+
+  /*
+   * TODO 2: add ids to the generated students here
+   *
+   * TODO 3: add at least 10 notes to each student
+   */
   private void generateSomeStudents() {
     for (var i = 0; i < 26; i++) {
       final var student = new Student();
