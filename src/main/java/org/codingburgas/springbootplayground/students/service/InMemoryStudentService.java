@@ -1,17 +1,27 @@
 package org.codingburgas.springbootplayground.students.service;
 
 import org.codingburgas.springbootplayground.students.model.Student;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 @Service
+@Profile("main")
 public class InMemoryStudentService implements StudentService {
+
+  private final static Logger LOGGER = Logger.getLogger(InMemoryStudentService.class.getName());
 
   private List<Student> students = new ArrayList<>();
 
   public InMemoryStudentService() {
+  LOGGER.log(Level.WARNING, "Student Service created");
     generateSomeStudents();
   }
 
@@ -25,6 +35,10 @@ public class InMemoryStudentService implements StudentService {
     return null;
   }
 
+  @Override
+  public void addStudent(Student student) {
+    students.add(student);
+  }
 
   private void generateSomeStudents() {
     for (var i = 0; i < 26; i++) {
