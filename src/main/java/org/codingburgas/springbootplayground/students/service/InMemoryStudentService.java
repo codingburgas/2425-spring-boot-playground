@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 
 @Service
-@Profile("main")
 public class InMemoryStudentService implements StudentService {
 
   private final static Logger LOGGER = Logger.getLogger(InMemoryStudentService.class.getName());
