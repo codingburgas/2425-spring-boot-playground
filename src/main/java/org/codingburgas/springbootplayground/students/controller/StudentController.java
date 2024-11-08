@@ -43,6 +43,6 @@ public class StudentController {
   public String getStudentDetails(@PathVariable Integer id, Model model) {
     // TODO 6: Implement the method, so that it passes the information of the Student with the specified id to the model (template)
     model.addAttribute("student", studentService.getStudentById(id));
-    return "student_details.html";
+    return "student_details";
   }
 }
