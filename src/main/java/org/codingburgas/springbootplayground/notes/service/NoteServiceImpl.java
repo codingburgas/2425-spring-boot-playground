@@ -3,6 +3,7 @@ package org.codingburgas.springbootplayground.notes.service;
 import org.codingburgas.springbootplayground.notes.model.Note;
 import org.codingburgas.springbootplayground.notes.model.NotesOverviewInfo;
 import org.codingburgas.springbootplayground.notes.model.Subject;
+import org.codingburgas.springbootplayground.students.model.Student;
 import org.codingburgas.springbootplayground.students.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,10 @@ public class NoteServiceImpl implements NoteService {
     notesOverviewInfo.setAverage(notes.stream().mapToDouble(note -> note.getValue().doubleValue()).average().orElse(0.0));
     notesOverviewInfo.setTotalSubjects(notes.stream().map(Note::getSubject).collect(Collectors.toSet()).size());
     return notesOverviewInfo;
+  }
+
+  @Override
+  public Student getBestStudent() {
+    return null;
   }
 }

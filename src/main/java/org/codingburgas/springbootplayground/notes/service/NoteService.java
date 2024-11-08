@@ -3,6 +3,7 @@ package org.codingburgas.springbootplayground.notes.service;
 import org.codingburgas.springbootplayground.notes.model.Note;
 import org.codingburgas.springbootplayground.notes.model.NotesOverviewInfo;
 import org.codingburgas.springbootplayground.notes.model.Subject;
+import org.codingburgas.springbootplayground.students.model.Student;
 
 import java.util.List;
 
@@ -25,5 +26,8 @@ public interface NoteService {
    * @return overview info object
    */
   NotesOverviewInfo getOverviewInfo();
+
+
+  Student getBestStudent();
 
 }
