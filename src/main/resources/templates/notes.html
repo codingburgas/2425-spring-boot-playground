@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="author" content="Martin Dobrev">
+  <meta name="description" content="Spring Boot Playground for the course 'Internet Programming 2024/2025'">
+
+  <!-- Font Imports -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <!-- Core Style -->
+  <link rel="stylesheet" href="../static/css/style.css" data-th-href="@{/css/style.css}" >
+
+  <!-- Font Icons -->
+  <link rel="stylesheet" href="../static/css/font-icons.css" data-th-href="@{/css/font-icons.css}">
+
+  <!-- Plugins/Components CSS -->
+  <link rel="stylesheet" href="../static/css/swiper.css" data-th-href="@{/css/swiper.css}">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../static/css/custom.css" data-th-href="@{/css/custom.css}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Title -->
+  <title>Notes</title>
+</head>
+<body class="stretched">
+<div id="wrapper">
+  <div th:insert="~{fragments :: header-menu}"></div>
+  <section id="content" >
+    <h2 class="notes-title">Notes Overview</h2>
+    <div id="section-pricing" class="page-section p-0 m-0">
+      <div id="pricing-switch" class="row pricing col-mb-50 mb-0">
+        <div class="col-md-4">
+          <div class="pricing-box pricing-simple p-5 bg-light border-top border-primary text-center">
+            <div class="pricing-title">
+              <h3>Total Notes</h3>
+            </div>
+            <div class="pricing-price" th:text="${info.getTotalNotes()}">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-md-4">
+          <div class="pricing-box pricing-simple p-5 bg-light border-top border-danger text-center">
+            <div class="pricing-title">
+              <h3>Average</h3>
+            </div>
+            <div class="pricing-price">
+              <div class="pts-content pts-content-false" th:text="${#numbers.formatDecimal(info.getAverage(), 1, 2)}"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+          <div class="pricing-box pricing-simple p-5 bg-light border-top border-success text-center">
+            <div class="pricing-title">
+              <h3>Number of subjects</h3>
+            </div>
+            <div class="pricing-price">
+              <div class="pts-content pts-content-false" th:text="${info.getTotalSubjects()}"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-charts">
+
+      <label>Filter by subject</label>
+      <select class="form-select" id="subject-select">
+        <option value="ALL">All</option>
+        <option value="MATH">Mathematics</option>
+        <option value="LITERATURE">Literature</option>
+        <option value="BG">Bulgarian Language</option>
+        <option value="EN">English Language</option>
+        <option value="PHYSICS">Physics</option>
+        <option value="CHEMISTRY">Chemistry</option>
+        <option value="HISTORY">History</option>
+        <option value="DB">Databases</option>
+        <option value="GEOGRAPHY">Geography</option>
+        <option value="INTERNET_PROGRAMMING">Internet Programming</option>
+        <option value="JAVA_OOP">Object Oriented Programming with Java</option>
+        <option value="JAVA_CP">Concurrent Programming with Java</option>
+      </select>
+
+      <div class="col-md-6">
+        <canvas id="chart-pie"></canvas>
+      </div>
+    </div>
+
+  </section>
+
+  <div th:insert="~{fragments :: footer}"></div>
+</div>
+
+<!-- JavaScripts
+============================================= -->
+<script src="../static/js/plugins.min.js" data-th-src="@{/js/plugins.min.js}"></script>
+<script src="../static/js/functions.bundle.js" data-th-src="@{/js/functions.bundle.js}"></script>
+<script src="../static/js/charts.js" data-th-src="@{/js/charts.js}"></script>
+<script th:src="@{/js/notes.js}"></script>
+</body>
+</html>

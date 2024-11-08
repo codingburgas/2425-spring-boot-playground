@@ -2,7 +2,6 @@ package org.codingburgas.springbootplayground.students.controller;
 
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.codingburgas.springbootplayground.students.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,7 @@ import java.util.logging.Logger;
 @RequestMapping("/students")
 public class StudentController {
 
-  private final static Logger LOGGER = Logger.getLogger(StudentController.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(StudentController.class.getName());
 
   private final StudentService studentService;
 
@@ -43,6 +42,7 @@ public class StudentController {
   @GetMapping("/{id}")
   public String getStudentDetails(@PathVariable Integer id, Model model) {
     // TODO 6: Implement the method, so that it passes the information of the Student with the specified id to the model (template)
+    model.addAttribute("student", studentService.getStudentById(id));
     return "student_details.html";
   }
 }

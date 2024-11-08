@@ -39,69 +39,7 @@
 
   <!-- Header
   ============================================= -->
-  <header id="header" class="full-header">
-    <div id="header-wrap">
-      <div class="container">
-        <div class="header-row">
-
-          <!-- Logo
-          ============================================= -->
-          <div id="logo">
-            <a href="index.html">
-              <img class="logo-default" height="50" data-th-src="@{/images/codingburgas_logo.png}" alt="Codingburgas Logo">
-            </a>
-          </div><!-- #logo end -->
-
-          <div class="header-misc">
-
-            <!-- Top Search
-            ============================================= -->
-            <div id="top-search" class="header-misc-icon">
-              <a href="#" id="top-search-trigger"><i class="uil uil-search"></i><i class="bi-x-lg"></i></a>
-            </div><!-- #top-search end -->
-
-          </div>
-
-          <div class="primary-menu-trigger">
-            <button class="cnvs-hamburger" type="button" title="Open Mobile Menu">
-              <span class="cnvs-hamburger-box"><span class="cnvs-hamburger-inner"></span></span>
-            </button>
-          </div>
-
-          <!-- Primary Navigation
-          ============================================= -->
-          <nav class="primary-menu sub-title">
-
-            <ul class="menu-container">
-              <li class="menu-item">
-                <a class="menu-link" href="index.html"><div>Home</div><span>Lets Start</span></a>
-              </li>
-              <li class="menu-item">
-                <a class="menu-link" href="#"><div>Lectures</div><span>What do we offer</span></a>
-              </li>
-              <li class="menu-item mega-menu">
-                <a class="menu-link" href="#"><div>Students</div><span>Check out our class</span></a>
-              </li>
-              <li class="menu-item mega-menu">
-                <a class="menu-link" href="#"><div>Notes</div><span>Look at some stats</span></a>
-
-              </li>
-              <li class="menu-item mega-menu">
-                <a class="menu-link" href="#"><div>About</div><span>Latest News</span></a>
-              </li>
-            </ul>
-
-          </nav><!-- #primary-menu end -->
-
-          <form class="top-search-form" action="search.html" method="get">
-            <input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter.." autocomplete="off">
-          </form>
-
-        </div>
-      </div>
-    </div>
-    <div class="header-wrap-clone"></div>
-  </header><!-- #header end -->
+  <div th:insert="~{fragments :: header-menu}"></div>
 
   <!-- Content
   ============================================= -->
@@ -127,7 +65,7 @@
                   <tr th:each="student, iter : ${students}">
                     <!-- TODO 7: make id display the correct id for each student (get the id from the class) -->
                     <!-- Also link the content of the id to the student details page (for example with <a> tag -->
-                    <th th:text="${iter.index + 1}">1</th>
+                    <td><a th:href="|/students/${student.getId()}|" th:text="${student.getId()}">1</a></td>
                     <td th:text="${student.getFirstname()}">Tim</td>
                     <td th:text="${student.getLastname()}">Test</td>
                     <td th:text="${student.getUsername()}">user@test.com</td>
@@ -143,79 +81,7 @@
 
   <!-- Footer
   ============================================= -->
-  <footer id="footer" class="dark">
-    <div class="container">
-
-      <!-- Footer Widgets
-      ============================================= -->
-      <div class="footer-widgets-wrap">
-
-        <div class="row col-mb-50">
-          <div class="col-lg-8">
-
-            <div class="row col-mb-50">
-              <div class="col-md-4">
-
-                <div class="widget">
-
-                  <p>We believe in <strong>Simple</strong>, <strong>Creative</strong> &amp; <strong>Flexible</strong> Teaching Process.</p>
-
-                  <div>
-                    <address>
-                      <strong>Headquarters:</strong><br>
-                      123 Acme Street<br>
-                      San Burgas, CA 94107<br>
-                    </address>
-                    <abbr title="Phone Number"><strong>Phone:</strong></abbr> (359) 1234 567890<br>
-                    <abbr title="Email Address"><strong>Email:</strong></abbr> info@codingburgas.org
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="col-md-4">
-
-                <div class="widget widget_links">
-
-                  <h4>Useful Links</h4>
-
-                  <ul>
-                    <li><a href="https://codingburgas.org/">Coding Burgas Main Website</a></li>
-                    <li><a href="https://spring.io/projects/spring-boot">Spring Boot official documentation</a></li>
-                    <li><a href="https://spring.io/projects/spring-data">Spring Data official documentation</a></li>
-                    <li><a href="https://www.thymeleaf.org/documentation.html">Thymeleaf official documentation</a></li>
-                  </ul>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-
-      </div><!-- .footer-widgets-wrap end -->
-
-    </div>
-
-    <!-- Copyrights
-    ============================================= -->
-    <div id="copyrights">
-      <div class="container">
-
-        <div class="row col-mb-30">
-
-          <div class="col-md-6 text-center text-md-start">
-            Copyrights &copy; 2024 All Rights Reserved by codingburgas.org<br>
-            <div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>
-          </div>
-        </div>
-
-      </div>
-    </div><!-- #copyrights end -->
-  </footer><!-- #footer end -->
+  <div th:insert="~{fragments :: footer}"></div>
 
 </div><!-- #wrapper end -->
 

@@ -1,13 +1,292 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>TODO</title>
+
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta name="author" content="Martin Dobrev">
+  <meta name="description" content="Spring Boot Playground for the course 'Internet Programming 2024/2025'">
+
+  <!-- Font Imports -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital@0;1&display=swap"
+      rel="stylesheet">
+
+  <!-- Core Style -->
+  <link rel="stylesheet" href="../static/css/style.css" data-th-href="@{/css/style.css}">
+
+  <!-- Font Icons -->
+  <link rel="stylesheet" href="../static/css/font-icons.css" data-th-href="@{/css/font-icons.css}">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../static/css/custom.css" data-th-href="@{/css/custom.css}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Document Title
+  ============================================= -->
+  <title th:text="|Student ${student.getId()}|">Student X</title>
+
 </head>
-<body>
-  <h1>Покажете данните за ученика в този файл</h1>
+
+<body class="stretched">
+
+<!-- Document Wrapper
+============================================= -->
+<div id="wrapper">
+
+  <!-- Header
+  ============================================= -->
+  <div th:insert="~{fragments :: header-menu}"></div>
+
+  <!-- Content
+  ============================================= -->
+  <section id="content" style="margin-bottom: 10px;">
+    <div class="content-wrap bg-light overflow-visible pb-0">
+      <div class="container">
+        <div class="single-event">
+
+          <div class="row flex-lg-row-reverse gutter-40">
+            <div class="col-lg-4 position-lg-sticky h-100" style="top: 100px;">
+              <div class="event-meta bg-white shadow-sm p-4 rounded-4 mb-3">
+                <h4 class="mb-4 fs-5 fw-semibold" th:text="|${student.getFirstname()} ${student.getLastname()}|">Tim
+                  Test</h4>
+
+                <ul class="mb-0">
+                  <li class="row gx-3 gy-4 mb-4">
+                    <div class="col-auto">
+                      <i class="box-square-sm d-flex align-items-center justify-content-center bi-people fs-3 color position-relative"></i>
+                    </div>
+                    <div class="col mb-0 op-09 ps-3 fs-6">Class <br><a href="#" class="text-black h-text-color"
+                                                                       th:text="${student.getSchoolClass()}"></a></div>
+                  </li>
+
+                  <li class="row gx-3 gy-4 mb-4">
+                    <div class="col-auto">
+                      <i class="box-square-sm d-flex align-items-center justify-content-center bi-calendar4-event fs-3 color position-relative"></i>
+                    </div>
+                    <div class="col mb-0 op-09 ps-3 fs-6">Birthday <br>
+                      <span th:text="${student.getBirthday()}"></span>
+                    </div>
+                  </li>
+
+                  <li class="row gx-3 gy-4 mb-4">
+                    <div class="col-auto">
+                      <i class="box-square-sm d-flex align-items-center justify-content-center bi-geo fs-3 color position-relative"></i>
+                    </div>
+                    <div class="col mb-0 op-09 ps-3 fs-6" th:text="${student.getAddress()}"></div>
+                  </li>
+
+                  <li class="row gx-3 gy-4">
+                    <div class="col-auto">
+                      <i class="box-square-sm d-flex align-items-center justify-content-center uil-chart-line fs-3 color position-relative"></i>
+                    </div>
+                    <div class="col mb-0 op-09 ps-3 fs-6">Notes total: <span
+                        th:text="${student.getNotes().size()}"></span> <br>Average: <span
+                        th:text="${student.getNoteAverage()}"></span></div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-8">
+
+              <div class="mx-auto mb-0" id="tab-login-register">
+
+                <ul class="nav canvas-alt-tabs2 tabs nav-pills justify-content-center mb-3" id="canvas-tab-nav2" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="tab-notes-average-tab" data-bs-toggle="pill" data-bs-target="#tab-notes-average"
+                            type="button" role="tab" aria-controls="tab-login" aria-selected="true">Среден успех</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-notes-pie-tab" data-bs-toggle="pill" data-bs-target="#tab-notes-pie" type="button"
+                            role="tab" aria-controls="tab-register" aria-selected="false">Разпределение</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-notes-table-tab" data-bs-toggle="pill" data-bs-target="#tab-notes-table" type="button"
+                            role="tab" aria-controls="tab-register" aria-selected="false">Таблица</button>
+                  </li>
+                </ul>
+
+                <div class="tab-content">
+                  <div class="tab-pane show active" id="tab-notes-average" role="tabpanel" aria-labelledby="canvas-tab-login-tab"
+                       tabindex="0">
+                    <canvas id="chart-line"></canvas>
+                  </div>
+
+                  <div class="tab-pane show" id="tab-notes-pie" role="tabpanel" aria-labelledby="canvas-tab-login-tab"
+                       tabindex="0">
+                    <canvas id="chart-pie"></canvas>
+                  </div>
+
+                  <div class="tab-pane" id="tab-notes-table" role="tabpanel" aria-labelledby="canvas-tab-register-tab"
+                       tabindex="0">
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Subject</th>
+                        <th>Note</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr th:each="note, iter : ${student.getNotes()}">
+                        <td th:text="${iter.index + 1}">1</td>
+                        <td th:text="${note.getDate()}"></td>
+                        <td th:text="${note.getSubject()}">Otto</td>
+                        <td th:text="${note.getValue()}">@mdo</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!-- #content end -->
+
+  <!-- FOOTER -->
+  <div th:insert="~{fragments :: footer}"></div>
+
+</div><!-- #wrapper end -->
+
+<!-- Go To Top
+============================================= -->
+<div id="gotoTop" class="uil uil-angle-up"></div>
+
+<!-- JavaScripts
+============================================= -->
+<script src="../static/js/plugins.min.js" data-th-src="@{/js/plugins.min.js}"></script>
+<script src="../static/js/functions.bundle.js" data-th-src="@{/js/functions.bundle.js}"></script>
+<script src="../static/js/charts.js" data-th-src="@{/js/charts.js}"></script>
+<script th:inline="javascript">
+  const notes = /*[[${student.getNotes()}]]*/{};
+</script>
+<script type="text/javascript">
+
+  const getNotesForGrade = (grade) => {
+    return notes.filter(note => note.value === grade).length;
+    // return Math.round(numberOfNotes / notes.length * 100);
+  }
+
+  const configPie = {
+    type: 'pie',
+    data: {
+      datasets: [{
+        data: [
+          getNotesForGrade(2),
+          getNotesForGrade(3),
+          getNotesForGrade(4),
+          getNotesForGrade(5),
+          getNotesForGrade(6),
+        ],
+        backgroundColor: [
+          'red',
+          'orange',
+          'yellow',
+          'green',
+          'blue',
+        ],
+        label: 'Notes'
+      }],
+      labels: [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    options: {
+      responsive: true
+    }
+  };
+
+  const getDates = () => {
+    const uniqueDates = [...new Set(notes.map(note => new Date(note.date)))];
+    uniqueDates.sort((a, b) => a.getTime() - b.getTime());
+    console.log(uniqueDates);
+    return uniqueDates.map(d => d.toString());
+  }
+
+  const getNoteAverageUntilDate = (date) => {
+    const filteredNotes = notes.map(note => {
+      return {...note, d: new Date(note.date)};
+    }).filter(n => n.d <= new Date(date));
+    const sumNotes = filteredNotes.map(n => n.value).reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0,
+    );
+    return sumNotes / filteredNotes.length;
+  }
+
+  const getNoteAverageForDates = () => {
+    const notesAvg = [];
+    const dates = getDates();
+    for (let i = 0; i < dates.length; i++) {
+      notesAvg.push(getNoteAverageUntilDate(dates[i]));
+    }
+    return notesAvg;
+  }
+
+  //const dates = getDates();
+  const configLine = {
+    type: 'line',
+    data: {
+      labels: getDates().map(d => new Date(d).toDateString()),
+      datasets: [{
+        label: "Среден успех",
+        backgroundColor: 'red',
+        borderColor: 'red',
+        data: getNoteAverageForDates(),
+        fill: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      title: {
+        display: true,
+        text: ''
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        x: {
+          display: true,
+          title: {
+            display: true,
+            text: 'Date'
+          }
+        },
+        y: {
+          display: true,
+          title: {
+            display: true,
+            text: 'Average note'
+          }
+        }
+      }
+    }
+  };
+
+  window.onload = function () {
+    const ctxPie = document.getElementById("chart-pie").getContext("2d");
+    const ctxLine = document.getElementById("chart-line").getContext("2d");
+    window.myPie = new Chart(ctxPie, configPie);
+    window.myLine = new Chart(ctxLine, configLine);
+  };
+</script>
+
 </body>
 </html>

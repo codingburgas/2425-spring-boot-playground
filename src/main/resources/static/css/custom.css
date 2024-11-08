@@ -8,3 +8,16 @@
 #header-wrap #logo img {
   height: 50px;
 }
+
+.notes-title {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#content {
+  margin: 0 20px;
+}
+
+#subject-select {
+  width: 300px;
+}
