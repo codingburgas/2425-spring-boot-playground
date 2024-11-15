@@ -3,8 +3,8 @@ package org.codingburgas.springbootplayground.notes.service;
 import org.codingburgas.springbootplayground.notes.model.Note;
 import org.codingburgas.springbootplayground.notes.model.NotesOverviewInfo;
 import org.codingburgas.springbootplayground.notes.model.Subject;
-import org.codingburgas.springbootplayground.students.model.Student;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface NoteService {
@@ -18,7 +18,7 @@ public interface NoteService {
    * @param value - return only notes with the provided value
    * @return list of notes
    */
-  List<Note> getNotes(Subject subject, Integer value);
+  List<Note> getNotes(Subject subject, BigDecimal value);
 
   /**
    * Returns a notes overview
@@ -26,8 +26,5 @@ public interface NoteService {
    * @return overview info object
    */
   NotesOverviewInfo getOverviewInfo();
-
-
-  Student getBestStudent();
 
 }

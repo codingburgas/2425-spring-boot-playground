@@ -1,9 +1,10 @@
 package org.codingburgas.springbootplayground.notes.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Note {
-  private Integer value;
+  private BigDecimal value;
   private LocalDate date;
   private Subject subject;
 
@@ -11,17 +12,17 @@ public class Note {
     // No-op
   }
 
-  public Note(Integer value, LocalDate date, Subject subject) {
+  public Note(BigDecimal value, LocalDate date, Subject subject) {
     this.value = value;
     this.date = date;
     this.subject = subject;
   }
 
-  public Integer getValue() {
+  public BigDecimal getValue() {
     return value;
   }
 
-  public void setValue(Integer value) {
+  public void setValue(BigDecimal value) {
     this.value = value;
   }
 
@@ -41,8 +42,4 @@ public class Note {
     this.subject = subject;
   }
 
-  @Override
-  public String toString() {
-    return String.format("{value: %d, date: '%s', subject: '%s'}", value, date.toString(), subject.getTitle());
-  }
 }

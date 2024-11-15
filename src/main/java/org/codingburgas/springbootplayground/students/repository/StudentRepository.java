@@ -8,7 +8,7 @@ public interface StudentRepository {
   List<Student> getStudents();
   Student getStudentByUsername(String username);
 
-  Student getStudentById(Integer id);
+  Student getStudentById(Long id);
 
   void addStudent(Student student);
 }

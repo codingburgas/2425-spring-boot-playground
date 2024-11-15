@@ -40,8 +40,7 @@ public class StudentController {
   }
 
   @GetMapping("/{id}")
-  public String getStudentDetails(@PathVariable Integer id, Model model) {
-    // TODO 6: Implement the method, so that it passes the information of the Student with the specified id to the model (template)
+  public String getStudentDetails(@PathVariable Long id, Model model) {
     model.addAttribute("student", studentService.getStudentById(id));
     return "student_details";
   }

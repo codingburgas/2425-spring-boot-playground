@@ -1,5 +1,6 @@
 package org.codingburgas.springbootplayground.students.service;
 
+import org.codingburgas.springbootplayground.notes.repository.NoteRepository;
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.codingburgas.springbootplayground.students.repository.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,11 @@ public class StudentServiceImpl implements StudentService {
   private static final Logger LOGGER = Logger.getLogger(StudentServiceImpl.class.getName());
 
   private final StudentRepository studentRepository;
+  private final NoteRepository noteRepository;
 
-  public StudentServiceImpl(StudentRepository studentRepository) {
+  public StudentServiceImpl(StudentRepository studentRepository, NoteRepository noteRepository) {
     this.studentRepository = studentRepository;
+    this.noteRepository = noteRepository;
   }
 
   @Override
@@ -30,12 +33,21 @@ public class StudentServiceImpl implements StudentService {
   }
 
   @Override
-  public Student getStudentById(Integer id) {
-    return studentRepository.getStudentById(id);
+  public Student getStudentById(Long id) {
+    final var student = studentRepository.getStudentById(id);
+    if (student != null) {
+      student.setNotes(noteRepository.getNotesForStudent(id));
+    }
+    return student;
   }
 
   @Override
   public void addStudent(Student student) {
     studentRepository.addStudent(student);
+  }
+
+  @Override
+  public Student getBestStudent() {
+    return studentRepository.getStudentById(noteRepository.getBestStudentIdByNoteAverage());
   }
 }

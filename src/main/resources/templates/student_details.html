@@ -84,7 +84,7 @@
                     </div>
                     <div class="col mb-0 op-09 ps-3 fs-6">Notes total: <span
                         th:text="${student.getNotes().size()}"></span> <br>Average: <span
-                        th:text="${student.getNoteAverage()}"></span></div>
+                        th:text="${#numbers.formatDecimal(student.getNoteAverage(), 1, 2)}"></span></div>
                   </li>
                 </ul>
               </div>

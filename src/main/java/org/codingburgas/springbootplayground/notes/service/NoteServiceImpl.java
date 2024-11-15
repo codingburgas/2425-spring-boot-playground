@@ -3,27 +3,27 @@ package org.codingburgas.springbootplayground.notes.service;
 import org.codingburgas.springbootplayground.notes.model.Note;
 import org.codingburgas.springbootplayground.notes.model.NotesOverviewInfo;
 import org.codingburgas.springbootplayground.notes.model.Subject;
+import org.codingburgas.springbootplayground.notes.repository.NoteRepository;
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.codingburgas.springbootplayground.students.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class NoteServiceImpl implements NoteService {
 
-  private final StudentRepository studentRepository;
+  private final NoteRepository noteRepository;
 
-  public NoteServiceImpl(StudentRepository studentRepository) {
-    this.studentRepository = studentRepository;
+  public NoteServiceImpl(NoteRepository noteRepository) {
+    this.noteRepository = noteRepository;
   }
 
   @Override
-  public List<Note> getNotes(Subject subject, Integer value) {
-    return studentRepository.getStudents()
-        .stream()
-        .flatMap(s -> s.getNotes().stream())
+  public List<Note> getNotes(Subject subject, BigDecimal value) {
+    return noteRepository.getNotes().stream()
         .filter(note -> {
           if (subject != null && value != null) {
             return subject.equals(note.getSubject()) && value.equals(note.getValue());
@@ -42,16 +42,11 @@ public class NoteServiceImpl implements NoteService {
 
   @Override
   public NotesOverviewInfo getOverviewInfo() {
-    var notes = getNotes(null, null);
+    //var notes = getNotes(null, null);
     var notesOverviewInfo = new NotesOverviewInfo();
-    notesOverviewInfo.setTotalNotes(notes.size());
-    notesOverviewInfo.setAverage(notes.stream().mapToDouble(note -> note.getValue().doubleValue()).average().orElse(0.0));
-    notesOverviewInfo.setTotalSubjects(notes.stream().map(Note::getSubject).collect(Collectors.toSet()).size());
+    notesOverviewInfo.setTotalNotes((int) noteRepository.getTotalNoteCount());
+    notesOverviewInfo.setAverage(noteRepository.getNotesAverage());
+    notesOverviewInfo.setTotalSubjects(Subject.values().length);
     return notesOverviewInfo;
-  }
-
-  @Override
-  public Student getBestStudent() {
-    return null;
   }
 }

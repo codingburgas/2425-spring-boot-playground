@@ -2,6 +2,7 @@ package org.codingburgas.springbootplayground.notes.service;
 
 import org.codingburgas.springbootplayground.notes.model.Note;
 import org.codingburgas.springbootplayground.notes.model.Subject;
+import org.codingburgas.springbootplayground.notes.repository.NoteRepository;
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.codingburgas.springbootplayground.students.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,35 +24,25 @@ class NoteServiceImplTest {
   private NoteServiceImpl serviceUnderTest;
 
   @Mock
-  StudentRepository studentRepository;
+  NoteRepository noteRepository;
 
   @BeforeEach
   void setUp() {
-    var student1 = new Student();
-    student1.setNotes(List.of(
-        new Note(3, LocalDate.now(), Subject.EN),
-        new Note(4, LocalDate.now(), Subject.EN),
-        new Note(4, LocalDate.now(), Subject.CHEMISTRY),
-        new Note(5, LocalDate.now(), Subject.DB),
-        new Note(5, LocalDate.now(), Subject.DB)
-    ));
-
-    var student2 = new Student();
-    student2.setNotes(List.of(
-        new Note(2, LocalDate.now(), Subject.EN),
-        new Note(2, LocalDate.now(), Subject.EN),
-        new Note(4, LocalDate.now(), Subject.GEOGRAPHY),
-        new Note(5, LocalDate.now(), Subject.JAVA_OOP),
-        new Note(5, LocalDate.now(), Subject.JAVA_OOP)
-    ));
-
-    var student3 = new Student();
-    student3.setId(1);
-    student3.setNotes(List.of(
-        new Note(6, LocalDate.now(), Subject.MATH)
-    ));
-    when(studentRepository.getStudents()).thenReturn(List.of(student1, student2, student3));
-    serviceUnderTest = new NoteServiceImpl(studentRepository);
+    var notes = List.of(
+        new Note(BigDecimal.valueOf(3), LocalDate.now(), Subject.EN),
+        new Note(BigDecimal.valueOf(4), LocalDate.now(), Subject.EN),
+        new Note(BigDecimal.valueOf(4), LocalDate.now(), Subject.CHEMISTRY),
+        new Note(BigDecimal.valueOf(5), LocalDate.now(), Subject.DB),
+        new Note(BigDecimal.valueOf(5), LocalDate.now(), Subject.DB),
+        new Note(BigDecimal.valueOf(2), LocalDate.now(), Subject.EN),
+        new Note(BigDecimal.valueOf(2), LocalDate.now(), Subject.EN),
+        new Note(BigDecimal.valueOf(4), LocalDate.now(), Subject.GEOGRAPHY),
+        new Note(BigDecimal.valueOf(5), LocalDate.now(), Subject.JAVA_OOP),
+        new Note(BigDecimal.valueOf(5), LocalDate.now(), Subject.JAVA_OOP),
+        new Note(BigDecimal.valueOf(6), LocalDate.now(), Subject.MATH)
+    );
+    when(noteRepository.getNotes()).thenReturn(notes);
+    serviceUnderTest = new NoteServiceImpl(noteRepository);
   }
 
   @Test
@@ -77,34 +69,24 @@ class NoteServiceImplTest {
   @Test
   void getNotes_withValue_returnsCorrectNotes() {
     // act
-    var allNotes = serviceUnderTest.getNotes(null, 5);
+    var allNotes = serviceUnderTest.getNotes(null, BigDecimal.valueOf(5));
 
     // assert
     assertNotNull(allNotes);
     assertEquals(4, allNotes.size());
-    assertEquals(5, allNotes.getFirst().getValue());
+    assertEquals(BigDecimal.valueOf(5), allNotes.getFirst().getValue());
   }
 
   @Test
   void getNotes_withSubjectAndValue_returnsCorrectNotes() {
     // act
-    var allNotes = serviceUnderTest.getNotes(Subject.EN, 4);
+    var allNotes = serviceUnderTest.getNotes(Subject.EN, BigDecimal.valueOf(4));
 
     // assert
     assertNotNull(allNotes);
     assertEquals(1, allNotes.size());
     assertEquals(Subject.EN, allNotes.getFirst().getSubject());
-    assertEquals(4, allNotes.getFirst().getValue());
-  }
-
-  @Test
-  void getBestStudent() {
-    // act
-    var bestStudent = serviceUnderTest.getBestStudent();
-
-    // assert
-    assertNotNull(bestStudent);
-    assertEquals(1, bestStudent.getId());
+    assertEquals(BigDecimal.valueOf(4), allNotes.getFirst().getValue());
   }
 
   @Test

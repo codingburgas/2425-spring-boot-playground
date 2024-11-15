@@ -73,27 +73,32 @@
 
     </div>
 
-    <div class="section-charts">
-
-      <label>Filter by subject</label>
-      <select class="form-select" id="subject-select">
-        <option value="ALL">All</option>
-        <option value="MATH">Mathematics</option>
-        <option value="LITERATURE">Literature</option>
-        <option value="BG">Bulgarian Language</option>
-        <option value="EN">English Language</option>
-        <option value="PHYSICS">Physics</option>
-        <option value="CHEMISTRY">Chemistry</option>
-        <option value="HISTORY">History</option>
-        <option value="DB">Databases</option>
-        <option value="GEOGRAPHY">Geography</option>
-        <option value="INTERNET_PROGRAMMING">Internet Programming</option>
-        <option value="JAVA_OOP">Object Oriented Programming with Java</option>
-        <option value="JAVA_CP">Concurrent Programming with Java</option>
-      </select>
+    <div class="section-charts row">
+      <div class="col-md-6">
+        <label>Filter by subject</label>
+        <select class="form-select" id="subject-select">
+          <option value="ALL">All</option>
+          <option value="MATH">Mathematics</option>
+          <option value="LITERATURE">Literature</option>
+          <option value="BG">Bulgarian Language</option>
+          <option value="EN">English Language</option>
+          <option value="PHYSICS">Physics</option>
+          <option value="CHEMISTRY">Chemistry</option>
+          <option value="HISTORY">History</option>
+          <option value="DB">Databases</option>
+          <option value="GEOGRAPHY">Geography</option>
+          <option value="INTERNET_PROGRAMMING">Internet Programming</option>
+          <option value="JAVA_OOP">Object Oriented Programming with Java</option>
+          <option value="JAVA_CP">Concurrent Programming with Java</option>
+        </select>
+        <canvas id="chart-pie"></canvas>
+      </div>
 
       <div class="col-md-6">
-        <canvas id="chart-pie"></canvas>
+        <h3>Best student: <a th:href="|/students/${bestStudent.getId()}|" th:text="|${bestStudent.getFirstname()} ${bestStudent.getLastname()}|"></a></h3>
+        <h3>Worst student: <a>TODO</a></h3>
+        <h3>Student with most 6: <a>TODO</a></h3>
+        <h3>Student with most 2: <a>TODO</a></h3>
       </div>
     </div>
 

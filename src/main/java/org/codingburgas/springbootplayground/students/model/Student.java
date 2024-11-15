@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Student {
 
-  private Integer id;
+  private Long id;
 
   private String firstname;
   private String lastname;
@@ -23,11 +23,11 @@ public class Student {
 
   private List<Note> notes = new ArrayList<>();
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
