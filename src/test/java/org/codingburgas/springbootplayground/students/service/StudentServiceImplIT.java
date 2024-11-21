@@ -59,7 +59,7 @@ class StudentServiceImplIT {
   @Test
   void test_getStudentWithMostBestNotes_returnsCorrectResult() {
     // act
-    var student = studentService.getStudentWithMostWorstNotes();
+    var student = studentService.getStudentWithMostBestNotes();
 
     // assert
     // based on the test data (data.sql), the student with most 6.00 notes has the id 4
