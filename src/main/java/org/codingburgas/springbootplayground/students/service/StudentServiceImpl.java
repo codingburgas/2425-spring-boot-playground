@@ -50,4 +50,22 @@ public class StudentServiceImpl implements StudentService {
   public Student getBestStudent() {
     return studentRepository.getStudentById(noteRepository.getBestStudentIdByNoteAverage());
   }
+
+  @Override
+  public Student getWorstStudent() {
+    // TODO: implement method
+    return null;
+  }
+
+  @Override
+  public Student getStudentWithMostBestNotes() {
+    // TODO: implement method
+    return null;
+  }
+
+  @Override
+  public Student getStudentWithMostWorstNotes() {
+    // TODO: implement method
+    return null;
+  }
 }

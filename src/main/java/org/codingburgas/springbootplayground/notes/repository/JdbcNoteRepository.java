@@ -102,6 +102,26 @@ public class JdbcNoteRepository implements NoteRepository, RowMapper<Note> {
   }
 
   @Override
+  public Long getStudentIdWithMostBestNotes() {
+    return null;
+  }
+
+  @Override
+  public Long getStudentIdWithMostWorstNotes() {
+    return null;
+  }
+
+  /**
+   * Maps a ResultSet to a Note class
+   * <p>
+   * Can be used to transform jdbc results to instances of class Note
+   *
+   * @param rs
+   * @param rowNum
+   * @return
+   * @throws SQLException
+   */
+  @Override
   public Note mapRow(ResultSet rs, int rowNum) throws SQLException {
     var note = new Note();
     String date = rs.getString(2);

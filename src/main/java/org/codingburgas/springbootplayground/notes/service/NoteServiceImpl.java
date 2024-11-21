@@ -4,8 +4,6 @@ import org.codingburgas.springbootplayground.notes.model.Note;
 import org.codingburgas.springbootplayground.notes.model.NotesOverviewInfo;
 import org.codingburgas.springbootplayground.notes.model.Subject;
 import org.codingburgas.springbootplayground.notes.repository.NoteRepository;
-import org.codingburgas.springbootplayground.students.model.Student;
-import org.codingburgas.springbootplayground.students.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -42,11 +40,12 @@ public class NoteServiceImpl implements NoteService {
 
   @Override
   public NotesOverviewInfo getOverviewInfo() {
-    //var notes = getNotes(null, null);
     var notesOverviewInfo = new NotesOverviewInfo();
     notesOverviewInfo.setTotalNotes((int) noteRepository.getTotalNoteCount());
     notesOverviewInfo.setAverage(noteRepository.getNotesAverage());
-    notesOverviewInfo.setTotalSubjects(Subject.values().length);
+    // Total subjects should be returned from the repositories
+    notesOverviewInfo.setTotalSubjects(noteRepository.getNotes().stream().map(note -> note.getSubject().name())
+        .collect(Collectors.toSet()).size());
     return notesOverviewInfo;
   }
 }

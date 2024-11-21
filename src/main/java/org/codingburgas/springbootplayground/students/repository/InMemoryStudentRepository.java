@@ -1,16 +1,11 @@
 package org.codingburgas.springbootplayground.students.repository;
 
-import org.codingburgas.springbootplayground.notes.model.Note;
-import org.codingburgas.springbootplayground.notes.model.Subject;
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Repository
 @Profile("default")

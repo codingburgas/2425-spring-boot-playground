@@ -19,4 +19,8 @@ public interface NoteRepository {
   Long getBestStudentIdByNoteAverage();
 
   Long getWorstStudentIdByNoteAverage();
+
+  Long getStudentIdWithMostBestNotes();
+
+  Long getStudentIdWithMostWorstNotes();
 }

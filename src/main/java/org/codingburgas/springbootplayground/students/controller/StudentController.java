@@ -34,7 +34,6 @@ public class StudentController {
 
   @PostMapping("/create")
   public RedirectView create(@ModelAttribute Student student) {
-    LOGGER.info(student.getFirstname());
     studentService.addStudent(student);
     return new RedirectView("/students");
   }

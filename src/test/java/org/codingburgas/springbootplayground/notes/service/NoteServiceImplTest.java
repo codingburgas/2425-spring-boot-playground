@@ -3,8 +3,6 @@ package org.codingburgas.springbootplayground.notes.service;
 import org.codingburgas.springbootplayground.notes.model.Note;
 import org.codingburgas.springbootplayground.notes.model.Subject;
 import org.codingburgas.springbootplayground.notes.repository.NoteRepository;
-import org.codingburgas.springbootplayground.students.model.Student;
-import org.codingburgas.springbootplayground.students.repository.StudentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +13,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -91,6 +90,9 @@ class NoteServiceImplTest {
 
   @Test
   void getOverviewInfo() {
+    // arrange
+    when(noteRepository.getTotalNoteCount()).thenReturn(11L);
+
     // act
     var info = serviceUnderTest.getOverviewInfo();
 

@@ -54,16 +54,26 @@ public class InMemoryNoteRepository implements NoteRepository {
 
   @Override
   public Long getBestStudentIdByNoteAverage() {
-    return Collections.max(studentNotes.entrySet(), (entry1, entry2) -> {
-      return Double.compare(
-          entry1.getValue().stream().mapToDouble(note -> note.getValue().doubleValue()).average().getAsDouble(),
-          entry2.getValue().stream().mapToDouble(note -> note.getValue().doubleValue()).average().getAsDouble()
-      );
-    }).getKey();
+    return Collections.max(studentNotes.entrySet(), (entry1, entry2) -> Double.compare(
+        entry1.getValue().stream().mapToDouble(note -> note.getValue().doubleValue()).average().getAsDouble(),
+        entry2.getValue().stream().mapToDouble(note -> note.getValue().doubleValue()).average().getAsDouble()
+    )).getKey();
   }
 
   @Override
   public Long getWorstStudentIdByNoteAverage() {
+    // TODO: Implement this method
+    return null;
+  }
+
+  @Override
+  public Long getStudentIdWithMostBestNotes() {
+    // TODO: Implement this method
+    return null;
+  }
+
+  @Override
+  public Long getStudentIdWithMostWorstNotes() {
     // TODO: Implement this method
     return null;
   }
