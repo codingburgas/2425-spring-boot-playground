@@ -63,7 +63,6 @@
                 </thead>
                 <tbody>
                   <tr th:each="student, iter : ${students}">
-                    <!-- TODO 7: make id display the correct id for each student (get the id from the class) -->
                     <!-- Also link the content of the id to the student details page (for example with <a> tag -->
                     <td><a th:href="|/students/${student.getId()}|" th:text="${student.getId()}">1</a></td>
                     <td th:text="${student.getFirstname()}">Tim</td>
