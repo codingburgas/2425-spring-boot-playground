@@ -12,10 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Integration tests for the StudentService
  * <p>
- * Uses the TestJdbcConfig class. This class loads
+ * Uses the TestJdbcConfig class. This class loads the demo data included in the testdb folder
+ * and also creates the JDBC repositories and services
  */
 @SpringJUnitConfig(TestJdbcConfig.class)
-class StudentServiceImplIT {
+class StudentServiceIntegrationTest {
 
   @Autowired
   StudentService studentService;
