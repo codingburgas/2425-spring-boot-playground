@@ -1,15 +1,13 @@
 package org.codingburgas.springbootplayground;
 
-import org.codingburgas.springbootplayground.config.TestJdbcConfig;
 import org.codingburgas.springbootplayground.students.model.Student;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -21,15 +19,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-@Import(TestJdbcConfig.class)
 @AutoConfigureMockMvc
-@Disabled
+@ActiveProfiles("h2")
 class ApplicationTests {
 
   @Autowired
   private MockMvc mockMvc;
 
   @Test
+  @Order(1)
   void mainPageLoads() throws Exception {
     mockMvc.perform(get("/"))
         .andExpect(status().isOk())
@@ -37,6 +35,7 @@ class ApplicationTests {
   }
 
   @Test
+  @Order(2)
   void studentsPageContainsAllStudents() throws Exception {
     mockMvc.perform(get("/students"))
         .andExpect(status().isOk())
@@ -44,11 +43,51 @@ class ApplicationTests {
         .andExpect(content().string(containsString("john@best.com")))
         .andExpect(content().string(containsString("michael@worst.com")))
         .andExpect(content().string(containsString("andy@most6.com")))
-        .andExpect(content().string(containsString("tom@most2.com")))
-    ;
+        .andExpect(content().string(containsString("tom@most2.com")));
   }
 
   @Test
+  @Order(3)
+  void notesPageContainsBestStudent() throws Exception {
+    var bestStudentPresentation = String.format("<a id=\"best-student\" href=\"/students/%d\">%s</a>", 2, "John Best");
+
+    mockMvc.perform(get("/notes"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(bestStudentPresentation)));
+  }
+
+  @Test
+  @Order(4)
+  void notesPageContainsWorstStudent() throws Exception {
+    var presentationString = String.format("<a id=\"worst-student\" href=\"/students/%d\">%s</a>", 3, "Michael Worst");
+
+    mockMvc.perform(get("/notes"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(presentationString)));
+  }
+
+  @Test
+  @Order(5)
+  void notesPageContainsStudentWithMost2Grades() throws Exception {
+    var presentationString = String.format("<a id=\"student-most-2\" href=\"/students/%d\">%s</a>", 5, "Tom Most2");
+
+    mockMvc.perform(get("/notes"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(presentationString)));
+  }
+
+  @Test
+  @Order(6)
+  void notesPageContainsStudentWithMost6Grades() throws Exception {
+    var presentationString = String.format("<a id=\"student-most-6\" href=\"/students/%d\">%s</a>", 6, "Andy Most6");
+
+    mockMvc.perform(get("/notes"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(presentationString)));
+  }
+
+  @Test
+  @Order(7)
   void createStudentIsWorkingCorrectly() throws Exception {
     // arrange
     var studentToBeCreated = new Student();

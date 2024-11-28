@@ -9,6 +9,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,12 +20,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * This is just a demonstration of how selenium is working
  */
 @Disabled
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("h2")
 public class SeleniumTest {
 
-  private static final String BASE_URL = "http://localhost:8081/";
-  private static final String NOTES_URL = BASE_URL + "notes";
+  @LocalServerPort
+  int port;
+  private static final String NOTES_PATH =  "notes";
 
-  private static final String CREATE_STUDENT_URL = BASE_URL + "students/create";
+  private static final String CREATE_STUDENT_PATH = "students/create";
 
 
   WebDriver driver;
@@ -41,7 +47,7 @@ public class SeleniumTest {
   @Test
   void testBestStudentIsPresent() {
     // arrange
-    driver.get(NOTES_URL);
+    driver.get(getUrl(NOTES_PATH));
 
     // act
     WebElement bestStudent = driver.findElement(By.id("best-student"));
@@ -56,7 +62,7 @@ public class SeleniumTest {
   @Test
   void testWorstStudentIsPresent() {
     // arrange
-    driver.get(NOTES_URL);
+    driver.get(getUrl(NOTES_PATH));
 
     // act
     WebElement worstStudent = driver.findElement(By.id("worst-student"));
@@ -71,7 +77,7 @@ public class SeleniumTest {
   @Test
   void testStudentWithMostBestNotesIsPresent() {
     // arrange
-    driver.get(NOTES_URL);
+    driver.get(getUrl(NOTES_PATH));
 
     // act
     WebElement studentMostBestNotes = driver.findElement(By.id("student-most-6"));
@@ -86,7 +92,7 @@ public class SeleniumTest {
   @Test
   void testStudentWithMostWorstNotesIsPresent() {
     // arrange
-    driver.get(NOTES_URL);
+    driver.get(getUrl(NOTES_PATH));
 
     // act
     WebElement studentMostWorstNotes = driver.findElement(By.id("student-most-2"));
@@ -123,7 +129,7 @@ public class SeleniumTest {
 
   private void createStudent(Student student) {
     // load create user page
-    driver.get(CREATE_STUDENT_URL);
+    driver.get(getUrl(CREATE_STUDENT_PATH));
 
     // set firstname
     WebElement firstnameForm = driver.findElement(By.id("firstname"));
@@ -139,5 +145,9 @@ public class SeleniumTest {
 
     WebElement submitButton = driver.findElement(By.cssSelector("button[type=\"submit\"]"));
     submitButton.click();
+  }
+
+  private String getUrl(String path) {
+    return String.format("http://localhost:%d/%s", port, path == null ? "" : path);
   }
 }
