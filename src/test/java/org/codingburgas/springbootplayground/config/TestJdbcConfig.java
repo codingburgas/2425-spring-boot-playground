@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 
@@ -37,13 +39,18 @@ public class TestJdbcConfig {
   }
 
   @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
   JdbcTemplate jdbcTemplate(DataSource dataSource) {
     return new JdbcTemplate(dataSource);
   }
 
   @Bean
-  StudentRepository studentRepository(JdbcTemplate jdbcTemplate, DataSource dataSource) {
-    return new JdbcStudentRepository(jdbcTemplate, dataSource);
+  StudentRepository studentRepository(JdbcTemplate jdbcTemplate, DataSource dataSource, PasswordEncoder passwordEncoder) {
+    return new JdbcStudentRepository(jdbcTemplate, dataSource, passwordEncoder);
   }
 
   @Bean

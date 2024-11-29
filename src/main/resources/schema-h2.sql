@@ -3,7 +3,9 @@ CREATE TABLE IF NOT EXISTS student(
     firstname VARCHAR(255),
     lastname VARCHAR(255),
     birthdate DATE,
-    username VARCHAR(255) UNIQUE NOT NULL
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255),
+    role VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS note(

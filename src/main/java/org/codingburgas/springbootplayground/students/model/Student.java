@@ -1,12 +1,16 @@
 package org.codingburgas.springbootplayground.students.model;
 
 import org.codingburgas.springbootplayground.notes.model.Note;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class Student {
+public class Student implements UserDetails {
 
   private Long id;
 
@@ -20,6 +24,22 @@ public class Student {
   private LocalDate birthday;
 
   private String address;
+
+  private String password;
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  private String role;
+
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
+  }
 
   private List<Note> notes = new ArrayList<>();
 
@@ -45,6 +65,17 @@ public class Student {
 
   public void setLastname(String lastname) {
     this.lastname = lastname;
+  }
+
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role));
+  }
+
+  @Override
+  public String getPassword() {
+    return password;
   }
 
   public String getUsername() {

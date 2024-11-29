@@ -8,6 +8,7 @@ import org.codingburgas.springbootplayground.students.repository.StudentReposito
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -34,11 +35,14 @@ public class DemoDataGenerator implements ApplicationListener<ApplicationReadyEv
   private final NoteRepository noteRepository;
   private final StudentRepository studentRepository;
 
+  private final PasswordEncoder passwordEncoder;
+
   private final Random random = new Random();
 
-  public DemoDataGenerator(NoteRepository noteRepository, StudentRepository studentRepository) {
+  public DemoDataGenerator(NoteRepository noteRepository, StudentRepository studentRepository, PasswordEncoder passwordEncoder) {
     this.noteRepository = noteRepository;
     this.studentRepository = studentRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -51,6 +55,8 @@ public class DemoDataGenerator implements ApplicationListener<ApplicationReadyEv
         student.setFirstname(String.format("Student %d", i + 1));
         student.setLastname(String.format("Unknown %d", i + 1));
         student.setUsername(String.format("student%d@condingburgas.org", i + 1));
+        student.setRole("USER");
+        student.setPassword(passwordEncoder.encode("user"));
         student.setSchoolClass("12Г");
         student.setBirthday(LocalDate.now().minusYears(18).minusDays(random.nextInt(0, 300)));
         student.setAddress("ул. Хелоууърлд 123, 8001 гр. Бургас");
@@ -63,6 +69,13 @@ public class DemoDataGenerator implements ApplicationListener<ApplicationReadyEv
           noteRepository.addNoteForStudent(note, (long) (i + 1));
         }
       }
+      var admin = new Student();
+      admin.setUsername("admin@admin.com");
+      admin.setPassword(passwordEncoder.encode("admin"));
+      admin.setFirstname("Darth");
+      admin.setLastname("Vader");
+      admin.setRole("ADMIN");
+      studentRepository.addStudent(admin);
     }
   }
 }

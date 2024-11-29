@@ -3,6 +3,9 @@ package org.codingburgas.springbootplayground.students.service;
 import org.codingburgas.springbootplayground.notes.repository.NoteRepository;
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.codingburgas.springbootplayground.students.repository.StudentRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +13,7 @@ import java.util.logging.Logger;
 
 
 @Service
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl implements StudentService, UserDetailsService {
 
   private static final Logger LOGGER = Logger.getLogger(StudentServiceImpl.class.getName());
 
@@ -29,16 +32,12 @@ public class StudentServiceImpl implements StudentService {
 
   @Override
   public Student getStudentByUsername(String username) {
-    return null;
+    return studentRepository.getStudentByUsername(username);
   }
 
   @Override
   public Student getStudentById(Long id) {
-    final var student = studentRepository.getStudentById(id);
-    if (student != null) {
-      student.setNotes(noteRepository.getNotesForStudent(id));
-    }
-    return student;
+    return studentRepository.getStudentById(id);
   }
 
   @Override
@@ -67,5 +66,16 @@ public class StudentServiceImpl implements StudentService {
   public Student getStudentWithMostWorstNotes() {
     // TODO: implement method
     return null;
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+    var student = this.studentRepository.getStudentByUsername(username);
+    if (student == null) {
+      throw new UsernameNotFoundException("User not found!");
+    }
+
+    return getStudentByUsername(username);
   }
 }

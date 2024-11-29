@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -31,8 +30,8 @@ public class SecurityConfiguration {
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.authorizeHttpRequests(auth ->
         auth.requestMatchers("/login", "/logout", "/", "/students").permitAll()
-            .requestMatchers("/students/create").hasRole("ADMIN")
-            .requestMatchers("/notes").hasAnyRole("USER", "ADMIN")
+            .requestMatchers("/students/create").hasAuthority("ADMIN")
+            .requestMatchers("/notes").hasAnyAuthority("USER", "ADMIN")
             .anyRequest().authenticated()
         )
         .formLogin(Customizer.withDefaults())
@@ -61,7 +60,7 @@ public class SecurityConfiguration {
     return new BCryptPasswordEncoder();
   }
 
-  @Bean
+  //@Bean
   public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
     UserDetails user = User.withUsername("user")
         .password(passwordEncoder.encode("user"))
