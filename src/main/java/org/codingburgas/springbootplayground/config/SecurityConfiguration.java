@@ -52,6 +52,8 @@ public class SecurityConfiguration {
         .requestMatchers("/css/**")
         .requestMatchers("/js/**")
         .requestMatchers("/images/**")
+        .requestMatchers("/h2-console")
+        .requestMatchers("/h2-console/**")
     );
   }
 
