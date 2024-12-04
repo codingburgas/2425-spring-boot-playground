@@ -1,22 +1,16 @@
 package org.codingburgas.springbootplayground.students.repository;
 
-import org.codingburgas.springbootplayground.notes.repository.JdbcNoteRepository;
 import org.codingburgas.springbootplayground.students.model.Student;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
