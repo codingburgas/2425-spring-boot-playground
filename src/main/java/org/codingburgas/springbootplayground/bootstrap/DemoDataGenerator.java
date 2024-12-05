@@ -3,16 +3,20 @@ package org.codingburgas.springbootplayground.bootstrap;
 import org.codingburgas.springbootplayground.notes.model.Note;
 import org.codingburgas.springbootplayground.notes.model.Subject;
 import org.codingburgas.springbootplayground.notes.repository.NoteRepository;
+import org.codingburgas.springbootplayground.security.model.Role;
+import org.codingburgas.springbootplayground.security.repository.UserRoleRepository;
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.codingburgas.springbootplayground.students.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -34,19 +38,33 @@ public class DemoDataGenerator implements ApplicationListener<ApplicationReadyEv
 
   private final NoteRepository noteRepository;
   private final StudentRepository studentRepository;
+  private final UserRoleRepository userRoleRepository;
 
   private final PasswordEncoder passwordEncoder;
 
   private final Random random = new Random();
 
-  public DemoDataGenerator(NoteRepository noteRepository, StudentRepository studentRepository, PasswordEncoder passwordEncoder) {
+  public DemoDataGenerator(NoteRepository noteRepository, StudentRepository studentRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
     this.noteRepository = noteRepository;
     this.studentRepository = studentRepository;
+    this.userRoleRepository = userRoleRepository;
     this.passwordEncoder = passwordEncoder;
   }
 
   @Override
   public void onApplicationEvent(ApplicationReadyEvent event) {
+    var adminRole = new Role();
+    adminRole.setTitle("ROLE_ADMIN");
+    adminRole.setId(userRoleRepository.addRole(adminRole));
+
+    var studentRole = new Role();
+    studentRole.setTitle("ROLE_STUDENT");
+    studentRole.setId(userRoleRepository.addRole(studentRole));
+
+    var teacherRole = new Role();
+    teacherRole.setTitle("ROLE_TEACHER");
+    teacherRole.setId(userRoleRepository.addRole(teacherRole));
+
     if (Boolean.TRUE.equals(generateDemoData)) {
       LOGGER.info("Generating demo data...");
       for (var i = 0; i < 26; i++) {
@@ -54,8 +72,8 @@ public class DemoDataGenerator implements ApplicationListener<ApplicationReadyEv
         student.setId((long) i + 1);
         student.setFirstname(String.format("Student %d", i + 1));
         student.setLastname(String.format("Unknown %d", i + 1));
-        student.setUsername(String.format("student%d@condingburgas.org", i + 1));
-        student.setRole("USER");
+        student.setUsername(String.format("student%d@codingburgas.org", i + 1));
+        student.setRoles(List.of("ROLE_STUDENT"));
         student.setPassword(passwordEncoder.encode("user"));
         student.setSchoolClass("12Г");
         student.setBirthday(LocalDate.now().minusYears(18).minusDays(random.nextInt(0, 300)));
@@ -74,7 +92,6 @@ public class DemoDataGenerator implements ApplicationListener<ApplicationReadyEv
       admin.setPassword(passwordEncoder.encode("admin"));
       admin.setFirstname("Darth");
       admin.setLastname("Vader");
-      admin.setRole("ADMIN");
       studentRepository.addStudent(admin);
     }
   }

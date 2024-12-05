@@ -3,8 +3,10 @@ package org.codingburgas.springbootplayground.security;
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * StudentAuthentication
@@ -31,7 +33,7 @@ public class StudentAuthentication implements Authentication {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return student.getAuthorities();
+    return student.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
   }
 
   @Override

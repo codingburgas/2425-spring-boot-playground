@@ -1,7 +1,7 @@
 package org.codingburgas.springbootplayground.config;
 
 import org.codingburgas.springbootplayground.security.StudentAuthenticationProvider;
-import org.codingburgas.springbootplayground.students.repository.StudentRepository;
+import org.codingburgas.springbootplayground.students.service.StudentService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -33,8 +33,8 @@ public class SecurityConfiguration {
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthenticationProvider authenticationProvider) throws Exception {
     httpSecurity.authorizeHttpRequests(auth ->
         auth.requestMatchers("/login", "/logout", "/", "/students").permitAll()
-            .requestMatchers("/students/create").hasAuthority("ADMIN")
-            .requestMatchers("/notes").hasAnyAuthority("USER", "ADMIN")
+            .requestMatchers("/students/create").hasAuthority("ROLE_ADMIN")
+            .requestMatchers("/notes").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
             .anyRequest().authenticated()
         )
         .formLogin(Customizer.withDefaults())
@@ -67,8 +67,8 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public AuthenticationProvider authenticationProvider(StudentRepository studentRepository, PasswordEncoder passwordEncoder) {
-    return new StudentAuthenticationProvider(studentRepository, passwordEncoder);
+  public AuthenticationProvider authenticationProvider(StudentService studentService, PasswordEncoder passwordEncoder) {
+    return new StudentAuthenticationProvider(studentService, passwordEncoder);
   }
 
   //@Bean

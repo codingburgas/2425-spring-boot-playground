@@ -4,6 +4,8 @@ import org.codingburgas.springbootplayground.notes.repository.JdbcNoteRepository
 import org.codingburgas.springbootplayground.notes.repository.NoteRepository;
 import org.codingburgas.springbootplayground.notes.service.NoteService;
 import org.codingburgas.springbootplayground.notes.service.NoteServiceImpl;
+import org.codingburgas.springbootplayground.security.repository.JdbcUserRoleRepository;
+import org.codingburgas.springbootplayground.security.repository.UserRoleRepository;
 import org.codingburgas.springbootplayground.students.repository.JdbcStudentRepository;
 import org.codingburgas.springbootplayground.students.repository.StudentRepository;
 import org.codingburgas.springbootplayground.students.service.StudentService;
@@ -49,8 +51,13 @@ public class TestJdbcConfig {
   }
 
   @Bean
-  StudentRepository studentRepository(JdbcTemplate jdbcTemplate, DataSource dataSource, PasswordEncoder passwordEncoder) {
-    return new JdbcStudentRepository(jdbcTemplate, dataSource, passwordEncoder);
+  UserRoleRepository userRoleRepository(JdbcTemplate jdbcTemplate) {
+    return new JdbcUserRoleRepository(jdbcTemplate);
+  }
+
+  @Bean
+  StudentRepository studentRepository(JdbcTemplate jdbcTemplate, UserRoleRepository userRoleRepository, DataSource dataSource, PasswordEncoder passwordEncoder) {
+    return new JdbcStudentRepository(jdbcTemplate, userRoleRepository, dataSource, passwordEncoder);
   }
 
   @Bean

@@ -1,6 +1,6 @@
 package org.codingburgas.springbootplayground.security;
 
-import org.codingburgas.springbootplayground.students.repository.StudentRepository;
+import org.codingburgas.springbootplayground.students.service.StudentService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,11 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 public class StudentAuthenticationProvider implements AuthenticationProvider {
 
-  private final StudentRepository studentRepository;
+  private final StudentService studentService;
   private final PasswordEncoder passwordEncoder;
 
-  public StudentAuthenticationProvider(StudentRepository studentRepository, PasswordEncoder passwordEncoder) {
-    this.studentRepository = studentRepository;
+  public StudentAuthenticationProvider(StudentService studentService, PasswordEncoder passwordEncoder) {
+    this.studentService = studentService;
     this.passwordEncoder = passwordEncoder;
   }
 
@@ -30,7 +30,7 @@ public class StudentAuthenticationProvider implements AuthenticationProvider {
     var password = authentication.getCredentials().toString();
 
     // check if the username exists
-    var student = studentRepository.getStudentByUsername(username);
+    var student = studentService.getStudentByUsername(username);
     if (student == null) {
       throw new UsernameNotFoundException("User not found");
     }

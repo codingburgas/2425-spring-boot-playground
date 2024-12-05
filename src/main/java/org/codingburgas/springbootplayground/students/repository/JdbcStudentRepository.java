@@ -1,5 +1,6 @@
 package org.codingburgas.springbootplayground.students.repository;
 
+import org.codingburgas.springbootplayground.security.repository.UserRoleRepository;
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,19 +23,22 @@ public class JdbcStudentRepository implements StudentRepository, RowMapper<Stude
 
   private static final String SQL_GET_ALL_STUDENTS = "SELECT * FROM student";
   private static final String SQL_INSERT_STUDENT =
-      "INSERT INTO student(firstname, lastname, birthdate, username, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+      "INSERT INTO student(firstname, lastname, birthdate, username) VALUES (?, ?, ?, ?)";
   private static final String SQL_GET_STUDENT_BY_ID = "SELECT * FROM student WHERE id = ?";
 
   private static final String SQL_GET_STUDENT_BY_USERNAME = "SELECT * FROM student WHERE username = ? ";
 
 
   private final JdbcTemplate jdbcTemplate;
+  private final UserRoleRepository userRoleRepository;
   private final DataSource dataSource;
 
   private final PasswordEncoder passwordEncoder;
 
-  public JdbcStudentRepository(JdbcTemplate jdbcTemplate, DataSource dataSource, PasswordEncoder passwordEncoder) {
+
+  public JdbcStudentRepository(JdbcTemplate jdbcTemplate, UserRoleRepository userRoleRepository, DataSource dataSource, PasswordEncoder passwordEncoder) {
     this.jdbcTemplate = jdbcTemplate;
+    this.userRoleRepository = userRoleRepository;
     this.dataSource = dataSource;
     this.passwordEncoder = passwordEncoder;
   }
@@ -46,25 +50,38 @@ public class JdbcStudentRepository implements StudentRepository, RowMapper<Stude
 
   @Override
   public Student getStudentByUsername(String username) {
-    return jdbcTemplate.queryForObject(SQL_GET_STUDENT_BY_USERNAME, this, username);
+    var student = jdbcTemplate.queryForObject(SQL_GET_STUDENT_BY_USERNAME, this, username);
+    var user = userRoleRepository.getUserByUsername(username);
+    if (user != null && student != null) {
+      student.setRoles(user.getRoles());
+      student.setPassword(user.getPassword());
+    }
+    return student;
   }
 
   @Override
   public Student getStudentById(Long id) {
-    return jdbcTemplate.queryForObject(SQL_GET_STUDENT_BY_ID, this, id);
+    var student = jdbcTemplate.queryForObject(SQL_GET_STUDENT_BY_ID, this, id);
+    if (student == null) {
+      return null;
+    }
+    var user = userRoleRepository.getUserByUsername(student.getUsername());
+    student.setPassword(user.getPassword());
+    student.setRoles(user.getRoles());
+    return student;
   }
 
   @Override
   public void addStudent(Student student) {
     if (student != null) {
+      userRoleRepository.addUser(student);
+
       jdbcTemplate.update(
           SQL_INSERT_STUDENT,
           student.getFirstname(),
           student.getLastname(),
           student.getBirthday(),
-          student.getUsername(),
-          student.getPassword(),
-          student.getRole()
+          student.getUsername()
       );
     }
   }
@@ -80,8 +97,6 @@ public class JdbcStudentRepository implements StudentRepository, RowMapper<Stude
       student.setBirthday(LocalDate.parse(birthday));
     }
     student.setUsername(rs.getString(5));
-    student.setPassword(rs.getString(6));
-    student.setRole(rs.getString(7));
     return student;
   }
 }
