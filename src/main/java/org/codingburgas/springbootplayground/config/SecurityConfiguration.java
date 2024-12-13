@@ -6,7 +6,6 @@ import org.codingburgas.springbootplayground.students.service.StudentService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -38,7 +37,9 @@ public class SecurityConfiguration {
             .requestMatchers("/notes").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
             .anyRequest().authenticated()
         )
-        .formLogin(Customizer.withDefaults())
+        .formLogin(httpSecurityFormLoginConfigurer -> {
+          httpSecurityFormLoginConfigurer.loginPage("/login").defaultSuccessUrl("/");
+        })
         .csrf(AbstractHttpConfigurer::disable);
     httpSecurity.authenticationProvider(authenticationProvider);
     return httpSecurity.build();
