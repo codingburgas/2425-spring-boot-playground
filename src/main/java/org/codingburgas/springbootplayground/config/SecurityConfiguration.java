@@ -38,7 +38,8 @@ public class SecurityConfiguration {
             .anyRequest().authenticated()
         )
         .formLogin(httpSecurityFormLoginConfigurer -> {
-          httpSecurityFormLoginConfigurer.loginPage("/login").defaultSuccessUrl("/");
+          httpSecurityFormLoginConfigurer.loginPage("/login")
+              .defaultSuccessUrl("/", true);
         })
         .csrf(AbstractHttpConfigurer::disable);
     httpSecurity.authenticationProvider(authenticationProvider);
