@@ -1,6 +1,7 @@
 package org.codingburgas.springbootplayground.config;
 
-import org.codingburgas.springbootplayground.security.StudentAuthenticationProvider;
+import org.codingburgas.springbootplayground.security.PlaygroundAuthenticationProvider;
+import org.codingburgas.springbootplayground.security.repository.UserRoleRepository;
 import org.codingburgas.springbootplayground.students.service.StudentService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -67,8 +68,8 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public AuthenticationProvider authenticationProvider(StudentService studentService, PasswordEncoder passwordEncoder) {
-    return new StudentAuthenticationProvider(studentService, passwordEncoder);
+  public AuthenticationProvider authenticationProvider(StudentService studentService, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
+    return new PlaygroundAuthenticationProvider(studentService, userRoleRepository, passwordEncoder);
   }
 
   //@Bean

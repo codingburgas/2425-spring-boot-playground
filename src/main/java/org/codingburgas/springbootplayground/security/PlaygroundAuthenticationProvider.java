@@ -1,5 +1,6 @@
 package org.codingburgas.springbootplayground.security;
 
+import org.codingburgas.springbootplayground.security.repository.UserRoleRepository;
 import org.codingburgas.springbootplayground.students.service.StudentService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,13 +14,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * <p>
  * Provider that authenticated students based on their credentials, stored in the database.
  */
-public class StudentAuthenticationProvider implements AuthenticationProvider {
+public class PlaygroundAuthenticationProvider implements AuthenticationProvider {
 
   private final StudentService studentService;
+  private final UserRoleRepository userRoleRepository;
   private final PasswordEncoder passwordEncoder;
 
-  public StudentAuthenticationProvider(StudentService studentService, PasswordEncoder passwordEncoder) {
+  public PlaygroundAuthenticationProvider(StudentService studentService, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
     this.studentService = studentService;
+    this.userRoleRepository = userRoleRepository;
     this.passwordEncoder = passwordEncoder;
   }
 
@@ -30,17 +33,23 @@ public class StudentAuthenticationProvider implements AuthenticationProvider {
     var password = authentication.getCredentials().toString();
 
     // check if the username exists
-    var student = studentService.getStudentByUsername(username);
-    if (student == null) {
-      throw new UsernameNotFoundException("User not found");
+    var user = userRoleRepository.getUserByUsername(username);
+
+    if (user == null) {
+      throw new UsernameNotFoundException("User not found!");
     }
 
-    // check the password
-    if (!passwordEncoder.matches(password, student.getPassword())) {
+    if (!passwordEncoder.matches(password, user.getPassword())) {
       throw new UsernameNotFoundException("Wrong credentials");
     }
 
-    return new StudentAuthentication(student);
+    var student = studentService.getStudentByUsername(username);
+    if (student == null) {
+      // user is not a student!!! Do some actions here if you add additional classes like teacher/etc.
+      return user;
+    }
+
+    return student;
   }
 
   /**

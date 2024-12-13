@@ -3,6 +3,7 @@ package org.codingburgas.springbootplayground.students.service;
 import org.codingburgas.springbootplayground.notes.repository.NoteRepository;
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.codingburgas.springbootplayground.students.repository.StudentRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,12 @@ public class StudentServiceImpl implements StudentService {
 
   @Override
   public Student getStudentByUsername(String username) {
-    return studentRepository.getStudentByUsername(username);
+    try {
+      return studentRepository.getStudentByUsername(username);
+    } catch (EmptyResultDataAccessException emptyResult) {
+      LOGGER.info(String.format("No student found for username: %s", username));
+      return null;
+    }
   }
 
   @Override

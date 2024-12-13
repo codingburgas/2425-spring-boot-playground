@@ -2,14 +2,10 @@ package org.codingburgas.springbootplayground.security.repository;
 
 import org.codingburgas.springbootplayground.security.model.Role;
 import org.codingburgas.springbootplayground.security.model.User;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +25,7 @@ public class JdbcUserRoleRepository implements UserRoleRepository {
     var parameters = new HashMap<String, String>();
     parameters.put("title", role.getTitle());
     return (long) jdbcInsert
-        .withTableName("`role`")
+        .withTableName("role")
         .usingColumns("title")
         .usingGeneratedKeyColumns("id")
         .executeAndReturnKey(parameters);

@@ -4,6 +4,7 @@ import org.codingburgas.springbootplayground.notes.model.Note;
 import org.codingburgas.springbootplayground.notes.model.Subject;
 import org.codingburgas.springbootplayground.notes.repository.NoteRepository;
 import org.codingburgas.springbootplayground.security.model.Role;
+import org.codingburgas.springbootplayground.security.model.User;
 import org.codingburgas.springbootplayground.security.repository.UserRoleRepository;
 import org.codingburgas.springbootplayground.students.model.Student;
 import org.codingburgas.springbootplayground.students.repository.StudentRepository;
@@ -87,12 +88,11 @@ public class DemoDataGenerator implements ApplicationListener<ApplicationReadyEv
           noteRepository.addNoteForStudent(note, (long) (i + 1));
         }
       }
-      var admin = new Student();
+      var admin = new User();
       admin.setUsername("admin@admin.com");
       admin.setPassword(passwordEncoder.encode("admin"));
-      admin.setFirstname("Darth");
-      admin.setLastname("Vader");
-      studentRepository.addStudent(admin);
+      admin.setRoles(List.of("ROLE_STUDENT", "ROLE_TEACHER", "ROLE_ADMIN"));
+      userRoleRepository.addUser(admin);
     }
   }
 }
